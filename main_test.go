@@ -114,9 +114,7 @@ func TestStripping(t *testing.T) {
 func TestBody(t *testing.T) {
 	// This is a visual test to see if the body comes out correctly.
 	conf := &config{
-		From:     "test@test.local",
-		Password: "Password123",
-		Prefix:   "https://fileserver.com/recipes",
+		Prefix: "https://fileserver.com/recipes",
 	}
 	tempDir, cleanup := prepFiles(t, 50)
 	defer cleanup()
@@ -126,6 +124,15 @@ func TestBody(t *testing.T) {
 		t.FailNow()
 	}
 
-	output := makeBody(conf, recipes)
+	output := makeBody(conf.Prefix, recipes)
 	t.Logf(string(output))
+}
+
+func TestExampleConfig(t *testing.T) {
+	example, err := exampleConfig()
+	if err != nil {
+		t.Logf("Error in example configuration. Error: %s", err)
+		t.FailNow()
+	}
+	t.Logf("Example config output:\n%s", example)
 }

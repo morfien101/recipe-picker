@@ -16,8 +16,8 @@ func sendEmail(config *config, body string) error {
 	d := gomail.NewDialer(
 		smtpServer,
 		smtpPort,
-		config.From,
-		config.Password,
+		config.SMTPUsername,
+		config.SMTPPassword,
 	)
 	sender, err := d.Dial()
 	if err != nil {
@@ -41,10 +41,10 @@ func sendEmail(config *config, body string) error {
 	return nil
 }
 
-func makeBody(config *config, recipes []string) string {
+func makeBody(prefix string, recipes []string) string {
 	recipeWrapper := func(recipeFile string) string {
 		name := strings.Split(recipeFile, ".")
-		return fmt.Sprintf(`<a href="%s/%s">%s</a>`, config.Prefix, recipeFile, name[0])
+		return fmt.Sprintf(`<a href="%s/%s">%s</a>`, prefix, recipeFile, name[0])
 	}
 	output := "<html>\n<body>\n"
 	body := "This weeks recipes:<br />\n<br />\n"
